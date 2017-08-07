@@ -1,7 +1,13 @@
+
+
+
 function Quiz(questions) {
+    console.log("in quiz")
+    console.log(questions.length)
     this.score = 0;
     this.questions = questions;
     this.currentQuestionIndex = 0;
+    
 }
 
 Quiz.prototype.guess = function(answer) {
@@ -18,17 +24,30 @@ Quiz.prototype.getCurrentQuestion = function() {
 Quiz.prototype.hasEnded = function() {
     return this.currentQuestionIndex >= this.questions.length;
 };
-function Question(text, choices, answer) {
-    this.text = text;
-    this.choices = choices;
-    this.answer = answer;
-}
 
-Question.prototype.isCorrectAnswer = function (choice) {
-    return this.answer === choice;
-};
+
 var QuizUI = {
+
+    displayStart: function() {
+
+        console.log("in displayStart");
+
+       try {
+                this.startHandler("start");
+            }           
+        catch(err) {
+                
+                QuizUI.displayNext();
+            }
+                 
+        
+
+    },
+
+
     displayNext: function () {
+
+        console.log("in displayNext");
         if (quiz.hasEnded()) {
             this.displayScore();
         } else {
@@ -65,24 +84,115 @@ var QuizUI = {
             QuizUI.displayNext();
         }
     },
+
+    startHandler: function(id) {
+        var button = document.getElementById(id);
+        
+        if (button == null){
+
+            QuizUI.displayNext();
+            
+            } else {
+
+             button.onclick = function() {
+            
+               Start();
+
+             }
+            
+            
+        }
+        
+    },
     
     displayProgress: function() {
         var currentQuestionNumber = quiz.currentQuestionIndex + 1;
         this.populateIdWithHTML("progress", "Question " + currentQuestionNumber + " of " + quiz.questions.length);
     }
 };
-//Create Questions
-var questions = [
-    new Question("Who was the first President of the United States?", [ "George Washington", "Thomas Jefferson", "Thomas Edison", "I don't know" ], "George Washington"),
-    new Question("How much should I be paid?", ["100k", "160k", "130k", "0, you suck"], "160k"),
-    new Question("Do you love to code?", ["No","Yes", "Hell Yeah", "No"], "Hell Yeah"),
-    new Question("What's the best programming language?", ["Javascript","C#", "Php", "Python"], "Python"),
-    new Question("Who shall inherit the earth?", ["The meek","Wolves", "Aliens", "Whoever can take it"], "The meek")
+
+
+function Question(text, choices, answer) {
+    this.text = text;
+    this.choices = choices;
+    this.answer = answer;
+}
+
+Question.prototype.isCorrectAnswer = function (choice) {
+    return this.answer === choice;
+};
+
+
+var allQuestions = new Array()
+var newquestions = new Array()
+var questions = new Array()
+var quiz
+
+ var jsonPromise = $.getJSON('questions.json',function(data){
+        
+        console.log('json loaded successfully');
+        console.log(data)
+        allQuestions = data.questions   
+        
+        console.log(allQuestions[0].question)
+        console.log(allQuestions[0].a)
+        console.log(allQuestions[0].correct)
+   
+        allQuestions.forEach(function(element) {
+        console.log(element);
+        questions.push(new Question(element.question, [ element.a, element.b, element.c, element.d ], element.correct))
+        
+        
+});
+      
+
+    }).error(function(){
+        console.log('error: json not loaded');
+    })
+
+
+
+
+
+function Start() {
+
+  
+
+ window.location.href = '/quiz.html';
+ QuizUI.displayNext();
+ 
+ 
+
+ 
+
+}
+
+
+jsonPromise.done(function(data) {
+    // success
+    questions.forEach(function(element) {
+
+        console.log(element);
+
+
+    });
+
+    quiz = new Quiz(questions);
+    QuizUI.displayStart();
     
-];
+});
 
-//Create Quiz
-var quiz = new Quiz(questions);
+jsonPromise.fail(function(reason) {
+    // it failed... handle it
+});
 
-//Display Quiz
-QuizUI.displayNext();
+// other stuff ....
+
+jsonPromise.then(function(data) {
+    // do moar stuff with data
+    // will perhaps fire instantly, since the deferred may already be resolved.
+
+    
+});
+
+
