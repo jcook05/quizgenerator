@@ -27,117 +27,92 @@ Quiz.prototype.hasEnded = function() {
     return this.currentQuestionIndex >= this.questions.length;
 };
 
-var QuizUI;
 
-function NewQuizUI(currentquiz) {
+
+function QuizUI(currentquiz) {
     
-    delete QuizUI;
-    QuizUI = {
+    console.log("In Quiz");
+    
+    
+    this.quiz = currentquiz;
 
-    displayStart: function(currentquiz) {
+    
+}
 
-        console.log("in displayStart");
-
-       try {
-                this.startHandler("start", currentquiz);
-                this.ec2Handler("ec2", currentquiz);
-            }           
-        catch(err) {
-                
-                QuizUI.displayNext(currentquiz);
-            }    
-    },
-
-
-    displayNext: function (currentquiz) {
+QuizUI.prototype.displayNext = function () {
 
         console.log("in displayNext");
-        if (currentquiz.hasEnded()) {
-            this.displayScore(currentquiz);
-        } else {
-            this.displayQuestion(currentquiz);
-            this.displayChoices(currentquiz);
-            this.displayProgress(currentquiz);
+        console.log(this.quiz);
+       if (this.quiz.hasEnded()) {
+            this.displayScore();
         }
-    },
-    displayQuestion: function(currentquiz) {
-        this.populateIdWithHTML("question", currentquiz.getCurrentQuestion().text);
-    },
-    displayChoices: function(currentquiz) {
-        var choices = currentquiz.getCurrentQuestion().choices;
+         else {
+            this.displayQuestion();
+            this.displayChoices();
+            this.displayProgress();
+        }
+   };
+
+QuizUI.prototype.displayScore = function() {
+        var gameOverHTML = "<h1>Game Over</h1>";
+        gameOverHTML += "<h2> Your score is: " + this.quiz.score + "</h2>";
+        this.populateIdWithHTML("quiz", gameOverHTML);
+    };   
+
+QuizUI.prototype.displayQuestion =  function() {
+        this.populateIdWithHTML("question", this.quiz.getCurrentQuestion().text);
+    }
+
+QuizUI.prototype.displayChoices = function() {
+        var choices = this.quiz.getCurrentQuestion().choices;
 
         for(var i = 0; i < choices.length; i++) {
             this.populateIdWithHTML("choice" + i, choices[i]);
-            this.guessHandler("guess" + i, choices[i], currentquiz);
+            this.guessHandler("guess" + i, choices[i]);
         }
-    },
-    displayScore: function(currentquiz) {
-        var gameOverHTML = "<h1>Game Over</h1>";
-        gameOverHTML += "<h2> Your score is: " + currentquiz.score + "</h2>";
-        this.populateIdWithHTML("quiz", gameOverHTML);
-    },
-    
-    populateIdWithHTML: function(id, text) {
-        var element = document.getElementById(id);
-        element.innerHTML = text;
-    },
-    guessHandler: function(id, guess, currentquiz) {
-        var button = document.getElementById(id);
-        button.onclick = function() {
-            currentquiz.guess(guess);
-            QuizUI.displayNext(currentquiz);
-        }
-    },
-
-    startHandler: function(id, currentquiz) {
-        var button = document.getElementById(id);
-        
-        if (button == null){
-
-            QuizUI.displayNext(currentquiz);
-            
-            } else {
-
-             button.onclick = function() {
-            
-               Start(currentquiz, topic);
-
-             }
-            
-            
-        }
-        
-    },
-    ec2Handler: function(id,curentquiz) {
-        var button = document.getElementById(id);
-        
-        if (button == null){
-
-            QuizUI.displayNext(currentquiz);
-            
-            } else {
-
-             button.onclick = function() {
-            
-               Ec2();
-
-             }
-            
-            
-        }
-        
-    },
-    
-    displayProgress: function(currentquiz) {
-        var currentQuestionNumber = currentquiz.currentQuestionIndex + 1;
-        this.populateIdWithHTML("progress", "Question " + currentQuestionNumber + " of " + currentquiz.questions.length);
     }
 
-  
-};
+QuizUI.prototype.displayScore = function() {
+        var gameOverHTML = "<h1>Game Over</h1>";
+        gameOverHTML += "<h2> Your score is: " + this.quiz.score + "</h2>";
+
+        gameOverHTML += "<button id=\"return\" class=\"btn--default\" >Try Again?</button>"
+        this.populateIdWithHTML("quiz", gameOverHTML);
+
+        var button = document.getElementById("return");
+        button.onclick = function() {
+
+            window.location.href = '/index.html';
+            
+        }
+    }
+
+QuizUI.prototype.populateIdWithHTML = function(id, text) {
+        var element = document.getElementById(id);
+        element.innerHTML = text;
+    }
+
+QuizUI.prototype.guessHandler = function(id, guess) {
+
+        console.log(this.quiz)
+        var button = document.getElementById(id);
+        button.onclick = function() {
+            quiz.guess(guess);
+            quizui.displayNext(quiz);
+        }
+    }
+
+QuizUI.prototype.displayProgress = function() {
+        var currentQuestionNumber = this.quiz.currentQuestionIndex + 1;
+        this.populateIdWithHTML("progress", "Question " + currentQuestionNumber + " of " + this.quiz.questions.length);
+    }
 
 
-}
+
+    
+
+
+
 
 function Question(topic, text, choices, answer) {
     this.topic = topic;
@@ -156,12 +131,13 @@ var newquestions = new Array()
 var questions = new Array()
 var jsonPromise;
 var topic;
+var quizui;
 
-var quiz
+var quiz;
 
-function LoadAllQuestions() {jsonPromise = $.getJSON('questions.json',function(data){
-        
-        console.log('json loaded successfully');
+
+function LoadQuestions(topic) { jsonPromise = $.getJSON('questions.json',function(data){
+                
         console.log(data)
         allQuestions = data.questions   
         
@@ -171,30 +147,36 @@ function LoadAllQuestions() {jsonPromise = $.getJSON('questions.json',function(d
    
         allQuestions.forEach(function(element) {
         console.log(element);
+        if(topic != "all"){
+
+        if(element.topic == topic){
         questions.push(new Question(element.topic, element.question, [ element.a, element.b, element.c, element.d ], element.correct))
+        }       
+        }else {
         
-        
+        questions.push(new Question(element.topic, element.question, [ element.a, element.b, element.c, element.d ], element.correct))
+        }
 });
       
-
     }).error(function(){
         console.log('error: json not loaded');
     })
-
 
 jsonPromise.done(function(data) {
     // success
     questions.forEach(function(element) {
 
         console.log(element);
-
-
     });
 
     quiz = new Quiz(questions);
     console.log(quiz)
     topic = "all";
-    
+    console.log('json loaded successfully');
+    quizui = new QuizUI(quiz);
+    console.log(quizui)
+    quizui.displayNext()
+
 });
 
 jsonPromise.fail(function(reason) {
@@ -206,73 +188,80 @@ jsonPromise.fail(function(reason) {
 jsonPromise.then(function(data) {
     // do moar stuff with data
     // will perhaps fire instantly, since the deferred may already be resolved.
-    NewQuizUI(quiz);
-    QuizUI.displayStart(quiz);
+    
+
+   
+
+
+
+    
+
+    
     
 });
 
+
 }
 
 
-function Start(currentquiz,topic) {
- 
- 
- console.log(currentquiz)
+function StartPage() {
+
+$('#start').click(function () {
+    Start();
+    
+    });
+
+    $('#ec2').click(function () {
+    Ec2();
+    
+    });    
 
 
- window.location.href = '/quiz.html';
 
- LoadAllQuestions();
-
- QuizUI.displayNext(currentquiz);
- 
 }
 
+function Start() {
+ 
+ 
+ window.location.href = '/quiz.html?topic=all';
 
-
-
-//$('ec2').click(function () {
-    //callFunction();
-  //  console.log("clicked")
-//});
+ 
+}
 
 function Ec2() {
 
-var ec2questions = new Array();
-var ec2quiz;
+window.location.href = '/quiz.html?topic=EC2';
+
+}
 
 
-console.log("in EC2");
+function DisplayQuiz(){
 
-QuestionUpdate("EC2",function(result) 
-{
-       console.log(result)
-       ec2questions = result;
-});
+var topic = getUrlParameter('topic');
 
-console.log("returned");
+console.log(topic)
 
-
-NewQuiz(ec2questions,function(result) 
-{
-       console.log(result)
-       
-});
-
-
-
-
-QuizUI.displayStart(ec2quiz)
-
-//window.location.href = '/quiz.html';
-
-
-//Start(ec2quiz);
-
-//window.location.href = '/quiz.html';
+LoadQuestions(topic);
 
 
 }
+
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+
+
 
 function NewQuiz(currentquestions, callback) {
 
