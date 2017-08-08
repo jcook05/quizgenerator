@@ -1,7 +1,7 @@
 {
     "questions": 
     [
-        {
+        {   "topic": "EC2",
             "question": "Question 1",
             "a": "Correct Answer",
             "b": "Answer b",
@@ -10,6 +10,7 @@
             "correct": "Correct Answer"
         },
         {
+            "topic": "EC2", 
             "question": "Question 2",
             "a": "Answer a",
             "b": "Correct Answer",
