@@ -122,6 +122,12 @@ function Question(topic, text, choices, answer) {
 }
 
 Question.prototype.isCorrectAnswer = function (choice) {
+
+    if(this.answer != choice) {
+        
+        alert('Sorry, incorrect.' + '\n' + 'The correct answer is: ' + this.answer )
+
+    }
     return this.answer === choice;
 };
 
@@ -134,9 +140,10 @@ var topic;
 var quizui;
 
 var quiz;
+var qloc = "http://newquizassets.s3-website-us-west-2.amazonaws.com/";
 
 
-function LoadQuestions(topic) { jsonPromise = $.getJSON('questions.json',function(data){
+function LoadQuestions(topic) { jsonPromise = $.getJSON(qloc + 'questions.json',function(data){
                 
         console.log(data)
         allQuestions = data.questions   
@@ -211,11 +218,20 @@ $('#start').click(function () {
     
     });
 
-    $('#ec2').click(function () {
-    Ec2();
+    $('#vikings').click(function () {
+    Topic("Vikings");
+    
+});    
+
+ $('#colonies').click(function () {
+    Topic("Colonies");
     
     });    
 
+$('#namericans').click(function () {
+    Topic("Native Americans");
+        
+    });    
 
 
 }
@@ -228,9 +244,9 @@ function Start() {
  
 }
 
-function Ec2() {
+function Topic(topic) {
 
-window.location.href = '/quiz.html?topic=EC2';
+window.location.href = '/quiz.html?topic=' + topic;
 
 }
 
