@@ -1,0 +1,45 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles/style.css">
+<title>Study Guide</title>
+</head>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/addquestions.js"></script>
+<script src="js/config.js"></script>
+
+<body onload="AddNewQuestions()"></body>
+<div class="grid">
+    <div id="questions" >
+        <h1>Add New Questions</h1>
+        <form id="nq" class="form">
+            Topic:<br>
+            <input type="text" name="topic"><br>
+            Question:<br>
+            <input type="text" name="question"><br>
+            Correct Answer:<br>
+            <input type="text" name="answer"><br>
+            Answer 1:<br>
+            <input type="text" name="answer1"><br>
+            Answer 2:<br>
+            <input type="text" name="answer2"><br>
+            Answer 3:<br>
+            <input type="text" name="answer3"><br>
+            Answer 4:<br>
+            <input type="text" name="answer4"><br>
+
+            
+            <button id="save" class="btn--default" title="Adds your question">Add Question</button>
+            <button id="cancel" class="btn--default" title="Return to quiz page, all unsubmitted questions will be lost">Cancel</button>
+            <button id="finish" class="btn--default" title="Submit your added questions, saving your work">Finish</button>
+
+          </form>
+        
+    </div>
+</div>
+<footer>
+    <p id="added">0 questions added</p>
+    <p id="total">Total Questions: 0</p>           
+</footer>
+
+</html>
