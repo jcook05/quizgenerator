@@ -4,5 +4,6 @@ const cognitoSettings = {
 }
 
 const ASSET_BUCKET = "http://newquizassets.s3-website-us-west-2.amazonaws.com"
-const qloc = "questions/";
+//const qloc = "questions/";
+qloc = ASSET_BUCKET + "/"
 const API_ENDPOINT = "https://l3tr9t8tf1.execute-api.us-west-2.amazonaws.com/dev"

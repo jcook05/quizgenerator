@@ -135,8 +135,10 @@ Question.prototype.isCorrectAnswer = function (choice) {
 var allQuestions = new Array()
 var newquestions = new Array()
 var questions = new Array()
+var startquestions = new Array()
 var jsonPromise;
 var topic;
+var topics = new Array()
 var quizui;
 
 var quiz;
@@ -214,14 +216,23 @@ jsonPromise.then(function(data) {
 
 function StartPage() {
 
+$('#addquestions').click(function () {
+        
+        NewQuestions();
+    
+    
+    });    
 
-
-
+getTopics();
 
 $('#start').click(function () {
     Start();
     
     });
+
+
+
+
 
 //$('#vikings').click(function () {
 //   Topic("Vikings");
@@ -238,10 +249,7 @@ $('#start').click(function () {
         
 //    })
     
-//$('#addquestions').click(function () {
-    //GenerateQuestions();
-//    NewQuestions();
-//    });        
+    
 
 }
 
@@ -257,6 +265,91 @@ function getTopic(element) {
 }
 
 
+function addButtons() {
+
+    //<button id="namericans" title="Native Americans" class="btn--default" onclick="getTopic(this)" >Native Americans</button>
+        
+    
+   
+    for (i=0;i<topics.length;i++) {  
+        var btn = $("<button/>");
+        btn.text(topics[i]);
+        btn.attr('title', topics[i]);
+        btn.addClass("btn--default");
+
+        btn.attr('onclick', 'getTopic(this)');
+        $('#quiz').append(btn);
+       }
+
+
+}
+
+function getTopics() { jsonPromise = $.getJSON(qloc + 'questions.json',function(data){
+                
+    
+    currentQuestions = data.questions   
+    
+    console.log(currentQuestions[0].question)
+    console.log(currentQuestions[0].a)
+    console.log(currentQuestions[0].correct)
+
+    currentQuestions.forEach(function(element) {
+    //console.log(element);
+    
+    if ($.inArray( element.topic, topics) == -1) {
+
+        console.log(element.topic);
+        topics.push(element.topic)
+
+    } else {
+
+        console.log("In Array")
+
+
+    }
+
+    
+    startquestions.push(new Question(element.topic, element.question, [ element.a, element.b, element.c, element.d ], element.correct))
+
+    
+    
+});
+  
+}).error(function(){
+    console.log('error: json not loaded');
+})
+
+jsonPromise.done(function(data) {
+
+console.log("Questions done")
+console.log(startquestions.length)
+addButtons()
+
+
+
+
+
+// success
+//addquestions.forEach(function(element) {
+
+//    console.log(element);
+//});
+
+});
+
+jsonPromise.fail(function(reason) {
+// it failed... handle it
+});
+
+// other stuff ....
+
+jsonPromise.then(function(data) {
+// do moar stuff with data
+// will perhaps fire instantly, since the deferred may already be resolved.
+
+});
+
+}
 
 
 

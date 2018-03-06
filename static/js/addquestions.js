@@ -43,7 +43,7 @@ function NewQuestions() {
 }
 
 
-function GetQuestions() { qjsonPromise = $.getJSON(qloc + 'questions.json',function(data){
+function getQuestions() { qjsonPromise = $.getJSON(qloc + 'questions.json',function(data){
                 
     
     currentQuestions = data.questions   
@@ -100,12 +100,21 @@ qjsonPromise.then(function(data) {
 function AddNewQuestions() {
 
 
-    GetQuestions();
+    getQuestions();
 
     console.log("need some functions")
     console.log(qcount)
 
     
+
+    $('#finish').click(function (event) {
+       
+               
+        SendQuestions(addquestions);
+
+        return false;
+            
+        })
 
     $('#save').click(function (event) {
        
