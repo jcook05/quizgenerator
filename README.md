@@ -12,6 +12,8 @@ Publicly Accessible site: Upload the contents of this repository and set all doc
 Site accessible by your router IP address range only: Upload the contents of this repository and ensure all objects are set to readable by owner only. Set bucket policy to restrict access to only your router range of IP addresses. See policy below for an example.
 
 
+To use the Add Questions functionality the included Lambda function must be setup via an API.   I use AWS Lambda with an API Gateway trigger.    The API accepts a json payload and passes it to the Lambda function for file creation and upload to S3.  
+
 Config:
 
 Update the /static/js/config.js file to reflect your environment.  
