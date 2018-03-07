@@ -109,11 +109,6 @@ QuizUI.prototype.displayProgress = function() {
 
 
 
-    
-
-
-
-
 function Question(topic, text, choices, answer) {
     this.topic = topic;
     this.text = text;
@@ -140,7 +135,7 @@ var topic;
 var quizui;
 
 var quiz;
-var qloc = "http://newquizassets.s3-website-us-west-2.amazonaws.com/";
+
 
 
 function LoadQuestions(topic) { jsonPromise = $.getJSON(qloc + 'questions.json',function(data){

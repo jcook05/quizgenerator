@@ -233,21 +233,6 @@ $('#start').click(function () {
 
 
 
-
-//$('#vikings').click(function () {
-//   Topic("Vikings");
-    
-//});    
-
-// $('#colonies').click(function () {
-//    Topic("Colonies");
-    
-//    });    
-
-//$('#namericans').click(function () {
-//    Topic("Native Americans");
-        
-//    })
     
     
 
@@ -267,8 +252,6 @@ function getTopic(element) {
 
 function addButtons() {
 
-    //<button id="namericans" title="Native Americans" class="btn--default" onclick="getTopic(this)" >Native Americans</button>
-        
     
    
     for (i=0;i<topics.length;i++) {  
@@ -284,7 +267,7 @@ function addButtons() {
 
 }
 
-function getTopics() { jsonPromise = $.getJSON("http://newquizassets.s3-website-us-west-2.amazonaws.com/questions.json",function(data){
+function getTopics() { jsonPromise = $.getJSON(qloc + 'questions.json',function(data){
                 
     
     currentQuestions = data.questions   

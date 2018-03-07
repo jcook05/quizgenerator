@@ -1,10 +1,15 @@
+
+// Future use Cogninto
 const cognitoSettings = {
-  UserPoolId: 'us-east-1_DKIcwoZGG',
-  ClientId: '5uectjtrih1d6l2fkq0pooevbj'
+  UserPoolId: 'us-east-1_DPIcwoZGG',
+  ClientId: '72ectjtrih1d6l2fkq0pooevbj'
 }
 
-const ASSET_BUCKET = "http://newquizassets.s3-website-us-west-2.amazonaws.com/"
+
+// S3 Bucket to store questions.json
+const ASSET_BUCKET = "http://yourassetbucket.s3-website-us-west-2.amazonaws.com/"
 //const qloc = "questions/";
 const qloc = ASSET_BUCKET;
 
-const API_ENDPOINT = "https://l3tr9t8tf1.execute-api.us-west-2.amazonaws.com/dev"
+// API_ENDPOINT
+const API_ENDPOINT = "https://yourapiendpoint.execute-api.us-west-2.amazonaws.com/dev"
