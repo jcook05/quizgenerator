@@ -3,7 +3,8 @@ const cognitoSettings = {
   ClientId: '5uectjtrih1d6l2fkq0pooevbj'
 }
 
-const ASSET_BUCKET = "http://newquizassets.s3-website-us-west-2.amazonaws.com"
+const ASSET_BUCKET = "http://newquizassets.s3-website-us-west-2.amazonaws.com/"
 //const qloc = "questions/";
-qloc = ASSET_BUCKET + "/"
+const qloc = ASSET_BUCKET;
+
 const API_ENDPOINT = "https://l3tr9t8tf1.execute-api.us-west-2.amazonaws.com/dev"

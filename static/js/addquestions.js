@@ -18,6 +18,12 @@ function NewQuestions() {
    }
 
 
+function MainPage() {
+
+    window.location.href = '/index.html';
+
+
+}
 
 
    function SendQuestions(data) { 
@@ -44,23 +50,13 @@ function NewQuestions() {
 
 
 function getQuestions() { qjsonPromise = $.getJSON(qloc + 'questions.json',function(data){
-                
-    
-    currentQuestions = data.questions   
-    
-    console.log(currentQuestions[0].question)
-    console.log(currentQuestions[0].a)
-    console.log(currentQuestions[0].correct)
-
-    currentQuestions.forEach(function(element) {
-    //console.log(element);
     
     
-    addquestions.push(new Question(element.topic, element.question, [ element.a, element.b, element.c, element.d ], element.correct))
-
-    
-    
-});
+   
+    console.log(data)
+    newaddquestions = data;
+    console.log(newaddquestions)
+    console.log(newaddquestions.questions.length)
   
 }).error(function(){
     console.log('error: json not loaded');
@@ -69,9 +65,9 @@ function getQuestions() { qjsonPromise = $.getJSON(qloc + 'questions.json',funct
 qjsonPromise.done(function(data) {
 
 console.log("Questions done")
-console.log(addquestions.length)
+
 console.log (qcount)
-document.getElementById('total').innerHTML = "Total Questions: " + addquestions.length
+document.getElementById('total').innerHTML = "Total Questions: " + newaddquestions.questions.length
     
 
 // success
@@ -110,7 +106,7 @@ function AddNewQuestions() {
     $('#finish').click(function (event) {
        
                
-        SendQuestions(addquestions);
+        SendQuestions(newaddquestions);
 
         return false;
             
@@ -147,13 +143,28 @@ function QuestionReview(element) {
 
         console.log("Modal to review questions and edit or submit")
         console.log(element)
-        console.log(addquestions.length)
-        addquestions.push(new Question(element.topic, element.question, [ element.a, element.b, element.c, element.d ], element.correct))
-        console.log(addquestions.length)
+        console.log(element[0].name)
+        console.log(newaddquestions.questions.length)
+
+        element.question, [ element.a, element.b, element.c, element.d ], element.correct
+        var obj = new Object();
+        obj.topic = element[0].value;
+        obj.question  = element[1].value;
+        obj.correct = element[2].value;
+        obj.a = element[3].value;
+        obj.b = element[4].value;
+        obj.c = element[5].value;
+        obj.d = element[6].value;
+        
+        var jsonString= JSON.stringify(obj);    
+
+        newaddquestions.questions.push(obj)
+        console.log(newaddquestions.questions.length)
+        console.log(newaddquestions)
         qcount++
 
         document.getElementById('added').innerHTML = qcount + " Questions Added"
-        document.getElementById('total').innerHTML = "Total Questions: " + addquestions.length
+        document.getElementById('total').innerHTML = "Total Questions: " + newaddquestions.questions.length
 
         // clear form
 
