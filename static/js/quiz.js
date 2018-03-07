@@ -284,7 +284,7 @@ function addButtons() {
 
 }
 
-function getTopics() { jsonPromise = $.getJSON("http://newquizassets.s3-website-us-west-2.amazonaws.com/questions.json",function(data){
+function getTopics() { jsonPromise = $.getJSON(qloc + 'questions.json',function(data){
                 
     
     currentQuestions = data.questions   
