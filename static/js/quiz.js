@@ -1,15 +1,9 @@
-
-
-
 function Quiz(questions, callback) {
     console.log("in quiz")
     console.log(questions.length)
     this.score = 0;
     this.questions = questions;
     this.currentQuestionIndex = 0;
-
-    
-    
 }
 
 Quiz.prototype.guess = function(answer) {
@@ -27,29 +21,22 @@ Quiz.prototype.hasEnded = function() {
     return this.currentQuestionIndex >= this.questions.length;
 };
 
-
-
-function QuizUI(currentquiz) {
-    
+function QuizUI(currentquiz) { 
     console.log("In Quiz");
-    
-    
-    this.quiz = currentquiz;
-
-    
+    this.quiz = currentquiz; 
 }
 
 QuizUI.prototype.displayNext = function () {
 
-        console.log("in displayNext");
-        console.log(this.quiz);
-       if (this.quiz.hasEnded()) {
-            this.displayScore();
-        }
-         else {
-            this.displayQuestion();
-            this.displayChoices();
-            this.displayProgress();
+    console.log("in displayNext");
+    console.log(this.quiz);
+    if (this.quiz.hasEnded()) {
+        this.displayScore();
+    }
+    else {
+        this.displayQuestion();
+        this.displayChoices();
+        this.displayProgress();
         }
    };
 
@@ -82,8 +69,7 @@ QuizUI.prototype.displayScore = function() {
         var button = document.getElementById("return");
         button.onclick = function() {
 
-            window.location.href = '/index.html';
-            
+            window.location.href = '/index.html';          
         }
     }
 
@@ -107,13 +93,6 @@ QuizUI.prototype.displayProgress = function() {
         this.populateIdWithHTML("progress", "Question " + currentQuestionNumber + " of " + this.quiz.questions.length);
     }
 
-
-
-    
-
-
-
-
 function Question(topic, text, choices, answer) {
     this.topic = topic;
     this.text = text;
@@ -123,14 +102,11 @@ function Question(topic, text, choices, answer) {
 
 Question.prototype.isCorrectAnswer = function (choice) {
 
-    if(this.answer != choice) {
-        
+    if(this.answer != choice) { 
         alert('Sorry, incorrect.' + '\n' + 'The correct answer is: ' + this.answer )
-
     }
     return this.answer === choice;
 };
-
 
 var allQuestions = new Array()
 var newquestions = new Array()
@@ -140,11 +116,7 @@ var jsonPromise;
 var topic;
 var topics = new Array()
 var quizui;
-
 var quiz;
-
-
-
 
 function LoadQuestions(topic) { jsonPromise = $.getJSON(qloc + 'questions.json',function(data){
                 
@@ -162,8 +134,7 @@ function LoadQuestions(topic) { jsonPromise = $.getJSON(qloc + 'questions.json',
         if(element.topic == topic){
         questions.push(new Question(element.topic, element.question, [ element.a, element.b, element.c, element.d ], element.correct))
         }       
-        }else {
-        
+        }else { 
         questions.push(new Question(element.topic, element.question, [ element.a, element.b, element.c, element.d ], element.correct))
         }
 });
@@ -197,80 +168,29 @@ jsonPromise.fail(function(reason) {
 
 jsonPromise.then(function(data) {
     // do moar stuff with data
-    // will perhaps fire instantly, since the deferred may already be resolved.
-    
-
-   
-
-
-
-    
-
-    
-    
+    // will perhaps fire instantly, since the deferred may already be resolved.    
 });
-
-
 }
 
-
 function StartPage() {
-
-$('#addquestions').click(function () {
-        
-        NewQuestions();
-    
-    
+$('#addquestions').click(function () {      
+        NewQuestions(); 
     });    
 
 getTopics();
 
 $('#start').click(function () {
     Start();
-    
-    });
-
-
-
-
-
-//$('#vikings').click(function () {
-//   Topic("Vikings");
-    
-//});    
-
-// $('#colonies').click(function () {
-//    Topic("Colonies");
-    
-//    });    
-
-//$('#namericans').click(function () {
-//    Topic("Native Americans");
-        
-//    })
-    
-    
-
+    });  
 }
 
-
-
-
 function getTopic(element) {
-
     Topic(element.title)
-
-
-
 }
 
 
 function addButtons() {
-
-    //<button id="namericans" title="Native Americans" class="btn--default" onclick="getTopic(this)" >Native Americans</button>
-        
-    
-   
+    //<button id="namericans" title="Native Americans" class="btn--default" onclick="getTopic(this)" >Native Americans</button>      
     for (i=0;i<topics.length;i++) {  
         var btn = $("<button/>");
         btn.text(topics[i]);
@@ -280,39 +200,23 @@ function addButtons() {
         btn.attr('onclick', 'getTopic(this)');
         $('#quiz').append(btn);
        }
-
-
 }
 
 function getTopics() { jsonPromise = $.getJSON(qloc + 'questions.json',function(data){
                 
-    
     currentQuestions = data.questions   
-    
     console.log(currentQuestions[0].question)
     console.log(currentQuestions[0].a)
     console.log(currentQuestions[0].correct)
-
     currentQuestions.forEach(function(element) {
     //console.log(element);
-    
     if ($.inArray( element.topic, topics) == -1) {
-
         console.log(element.topic);
         topics.push(element.topic)
-
     } else {
-
         console.log("In Array")
-
-
     }
-
-    
     startquestions.push(new Question(element.topic, element.question, [ element.a, element.b, element.c, element.d ], element.correct))
-
-    
-    
 });
   
 }).error(function(){
@@ -320,66 +224,37 @@ function getTopics() { jsonPromise = $.getJSON(qloc + 'questions.json',function(
 })
 
 jsonPromise.done(function(data) {
-
 console.log("Questions done")
 console.log(startquestions.length)
 addButtons()
 
-
-
-
-
 // success
 //addquestions.forEach(function(element) {
-
 //    console.log(element);
 //});
-
 });
-
 jsonPromise.fail(function(reason) {
 // it failed... handle it
 });
-
 // other stuff ....
-
 jsonPromise.then(function(data) {
 // do moar stuff with data
 // will perhaps fire instantly, since the deferred may already be resolved.
-
 });
-
 }
 
-
-
-
-
-
 function Start() {
- 
- 
  window.location.href = '/quiz.html?topic=all';
-
- 
 }
 
 function Topic(topic) {
-
 window.location.href = '/quiz.html?topic=' + topic;
-
 }
 
-
 function DisplayQuiz(){
-
 var topic = getUrlParameter('topic');
-
 console.log(topic)
-
 LoadQuestions(topic);
-
-
 }
 
 var getUrlParameter = function getUrlParameter(sParam) {
@@ -387,56 +262,33 @@ var getUrlParameter = function getUrlParameter(sParam) {
         sURLVariables = sPageURL.split('&'),
         sParameterName,
         i;
-
     for (i = 0; i < sURLVariables.length; i++) {
         sParameterName = sURLVariables[i].split('=');
-
         if (sParameterName[0] === sParam) {
             return sParameterName[1] === undefined ? true : sParameterName[1];
         }
     }
 };
 
-
-
 function NewQuiz(currentquestions, callback) {
-
     var newquiz;
-
     newquiz = new Quiz(currentquestions);
-
     console.log(newquiz);
-
     NewQuizUI(newquiz);
-
-
     callback(newquiz);
-
-
 }
 
 function QuestionUpdate(topic, callback)  {
-
-    console.log("In question update")
-
+   console.log("In question update")
    // update questions
    var newquestions = new Array();
    questions.forEach(function(element) {
         console.log(element);
         questions.push(new Question(element.question, [ element.a, element.b, element.c, element.d ], element.correct))
         if(element.topic == topic) {
-
             newquestions.push(element)
-
-        }
-        
+        }     
 });
-
    console.log(newquestions.length)
    callback(newquestions)
-
 }
-
-
-
-

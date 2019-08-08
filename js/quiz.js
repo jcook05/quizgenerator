@@ -1,15 +1,11 @@
 
 
-
 function Quiz(questions, callback) {
     console.log("in quiz")
     console.log(questions.length)
     this.score = 0;
     this.questions = questions;
-    this.currentQuestionIndex = 0;
-
-    
-    
+    this.currentQuestionIndex = 0;  
 }
 
 Quiz.prototype.guess = function(answer) {
@@ -27,16 +23,9 @@ Quiz.prototype.hasEnded = function() {
     return this.currentQuestionIndex >= this.questions.length;
 };
 
-
-
 function QuizUI(currentquiz) {
-    
     console.log("In Quiz");
-    
-    
     this.quiz = currentquiz;
-
-    
 }
 
 QuizUI.prototype.displayNext = function () {
