@@ -10,18 +10,15 @@ var qjsonPromise;
 
 
 function NewQuestions() {
- 
- 
+  
     window.location.href = '/addquestions.html';
-   
-    
+       
    }
 
 
 function MainPage() {
 
     window.location.href = '/index.html';
-
 
 }
 
